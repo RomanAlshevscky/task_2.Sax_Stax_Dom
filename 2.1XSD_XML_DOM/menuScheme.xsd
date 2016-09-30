@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+    <schema targetNamespace="http://www.XML-XSD.com"
+               xmlns:tns="http://www.XML-XSD.com"
+               xmlns="http://www.w3.org/2001/XMLSchema"
+               attributeFormDefault="unqualified"
+               elementFormDefault="qualified" >
+
+
+        <element name="restaurant" type="tns:Restaurant" />
+
+        <complexType name="Restaurant">
+            <sequence>
+                <element name="menu" type="tns:Menu" />
+            </sequence>
+            <attribute name="name" type ="string" />
+        </complexType>
+
+        <complexType name="Menu">
+            <all>
+                <element name="section" type="tns:Section" />
+            </all>
+        </complexType>
+
+        <complexType name="Section">
+            <all>
+                <element name ="dish" type="tns:Dish" />
+            </all>
+            <attribute name="name" type="string"/>
+            <attribute name="id" type="ID" />
+        </complexType>
+    
+        <complexType name="Dish">
+            <sequence>
+                <element name="photo" type="tns:Picture" />
+                <element name="name" type="string" />
+                <element name="desc" type="tns:Description" />
+                <element name="portion" type="tns:Portion" />
+                <element name="price" type="tns:Price" />
+            </sequence>
+        </complexType>
+
+        <complexType name="Picture">
+            <sequence>
+                <element name="link" type="string" minOccurs="1" maxOccurs="1"/>
+            </sequence>
+        </complexType>
+
+        <complexType name="Description">
+            <all>
+                <element name="desription" type="string" minOccurs="0" maxOccurs="1" /> 
+            </all>
+        </complexType>
+
+        <complexType name="Portion">
+            <choice>
+                <element name="weigh" type="tns:Weight" minOccurs="1" />
+                <element name="count" type="positiveInteger" minOccurs="1" maxOccurs="1" />
+            </choice>
+        </complexType>
+
+        <complexType name="Weight">
+            <all>
+                <element name="value" type="positiveInteger" />
+            </all>
+            <attribute name="units" type="string" />
+        </complexType>
+    
+        <complexType name="Price">
+            <all>
+                <element name="value" type="positiveInteger" minOccurs="0"/>
+            </all>
+            <attribute name="currency" type="string"/>
+        </complexType>
+    
+    </schema>
