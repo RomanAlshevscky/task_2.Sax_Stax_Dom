@@ -10,16 +10,17 @@ public class Document {
         this.documentElement = element;
     }
 
-    public List<Node> getElementsByTagName(String name){
-
-    }
+    //public List<Node> getElementsByTagName(String name){}
 
     public Element getDocumentElement(){
         return this.documentElement;
     }
 
     public boolean isEmpty(){
-        return true;
+        if (this.documentElement == null)
+            return true;
+        else
+            return false;
     }
 
 

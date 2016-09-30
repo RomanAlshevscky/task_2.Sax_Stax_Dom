@@ -13,11 +13,19 @@ public class Tag {
     private String name;
     private int position;
     private HashMap<String, String> attributes;
-    private boolean closed;
+    public boolean closed;
 
     public Tag(String tag, int pos) throws Exception{
         this.position = pos;
         parse(tag);
+    }
+
+    public int getPosition(){
+        return this.position;
+    }
+
+    public String getFullName(){
+        return this.nameSpace + ":" + this.name;
     }
 
     public String getName(){
