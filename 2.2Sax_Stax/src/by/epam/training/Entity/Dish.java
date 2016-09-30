@@ -1,7 +1,6 @@
-package fundamentals.Entity;
+package by.epam.training.Entity;
 
 import java.util.ArrayList;
-import java.util.InputMismatchException;
 
 /**
  * Created by User on 30.09.2016.

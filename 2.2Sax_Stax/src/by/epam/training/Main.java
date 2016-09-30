@@ -1,6 +1,6 @@
-package fundamentals;
+package by.epam.training;
 
-import fundamentals.Entity.MenuModel;
+import by.epam.training.Entity.MenuModel;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 import org.xml.sax.XMLReader;

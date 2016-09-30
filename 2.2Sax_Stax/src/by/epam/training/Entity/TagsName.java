@@ -1,4 +1,4 @@
-package fundamentals.Entity;
+package by.epam.training.Entity;
 
 /**
  * Created by User on 30.09.2016.

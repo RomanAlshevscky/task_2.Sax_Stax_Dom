@@ -1,4 +1,4 @@
-package fundamentals.Entity;
+package by.epam.training.Entity;
 
 import java.util.HashMap;
 import java.util.LinkedList;

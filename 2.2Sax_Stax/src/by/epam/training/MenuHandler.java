@@ -1,13 +1,12 @@
-package fundamentals;
+package by.epam.training;
 
-import fundamentals.Entity.Dish;
-import fundamentals.Entity.MenuModel;
-import fundamentals.Entity.TagsName;
+import by.epam.training.Entity.Dish;
+import by.epam.training.Entity.MenuModel;
+import by.epam.training.Entity.TagsName;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
 
-import java.util.ArrayList;
 import java.util.LinkedList;
 
 /**
