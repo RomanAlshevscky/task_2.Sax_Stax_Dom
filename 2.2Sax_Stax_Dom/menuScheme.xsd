@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+    <schema xmlns="http://www.w3.org/2001/XMLSchema"
+        targetNamespace="http://www.menu_schema.by"
+        xmlns:tns="http://www.menu_schema.by"
+        elementFormDefault="qualified" >
+
+
+        <element name="restaurant" type="tns:Restaurant" />
+
+        <complexType name="Restaurant">
+            <sequence>
+                <element name="menu" type="tns:Menu" />
+            </sequence>
+            <attribute name="name" type ="string" />
+        </complexType>
+
+        <complexType name="Menu">
+            <sequence>
+                <element name="section" type="tns:Section" maxOccurs="unbounded"/>
+            </sequence>
+        </complexType>
+
+        <complexType name="Section">
+            <sequence>
+                <element name ="dish" type="tns:Dish" minOccurs="0" maxOccurs="unbounded"/>
+            </sequence>
+            <attribute name="name" type="string"/>
+        </complexType>
+    
+        <complexType name="Dish">
+            <sequence>
+                <element name="photo" type="tns:Picture" />
+                <element name="name" type="string" />
+                <element name="desc" type="string" />
+                <element name="portion" type="tns:Portion" />
+                <element name="price" type="string" />
+            </sequence>
+        </complexType>
+
+        <complexType name="Picture">
+            <sequence>
+                <element name="link" type="string" minOccurs="0" maxOccurs="1"/>
+            </sequence>
+        </complexType>
+
+        <complexType name="Portion">
+            <choice>
+                <element name="weight" type="string" minOccurs="1" />
+                <element name="count" type="positiveInteger" minOccurs="1" maxOccurs="1" />
+            </choice>
+        </complexType>
+    
+    </schema>

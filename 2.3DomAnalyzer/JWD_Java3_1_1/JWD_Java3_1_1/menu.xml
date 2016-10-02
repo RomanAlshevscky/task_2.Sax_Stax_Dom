@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+            <restaurant xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                     xmlns="http://www.menu_schema.by"
+                     xsi:schemaLocation="http://www.menu_schema.by menuScheme.xsd"
+                     name="Жемчужина">
+                <menu>
+                    <section name = "Холодные закуски" >
+                        <dish>
+                            <photo />
+                            <name>Фестиваль салатов</name>
+                            <desc></desc>
+                            <portion>
+                                <weight>400/10</weight>
+                            </portion>
+                            <price />
+                        </dish>
+
+                        <dish>
+                            <photo />
+                            <name>Оливки, маслины</name>
+                            <desc></desc>
+                            <portion>
+                                <weight>50</weight>
+                            </portion>
+                            <price />
+                        </dish>
+
+                    </section>
+
+                       <section name = "Холодные закуски" >
+
+                        <dish>
+                            <photo />
+                            <name>Оливки, маслины</name>
+                            <desc></desc>
+                            <portion>
+                                <weight>50</weight>
+                            </portion>
+                            <price />
+                        </dish>
+
+                    </section>
+
+                    <section name = "Салаты"  />
+                    <section name = "Супы"  />
+                
+                </menu>
+            </restaurant>

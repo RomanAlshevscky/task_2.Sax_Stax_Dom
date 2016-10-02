@@ -5,19 +5,20 @@ import by.tc.les03.entity.Element;
 import by.tc.les03.entity.Tag;
 import by.tc.les03.service.DomParser;
 
-import javax.print.Doc;
-import java.io.File;
 import java.io.IOException;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Stack;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class BaseDomParser implements DomParser {
-	
+
+    private Stack<Element> parentEl = new Stack<>();
+
 	public Document parse(String fileName) throws Exception{
         Document doc = new Document(null);
         String fileContent = openFile(fileName);
@@ -32,12 +33,12 @@ public class BaseDomParser implements DomParser {
     }
 
     private LinkedList<Tag> parseTags(String content) throws Exception{
-        Pattern p = Pattern.compile("<\\w+[^ >]*(\\:\\w+(\\d+(\\w)*)*)*.+>");
+        Pattern p = Pattern.compile("<\\/*\\w+[^ >]*(\\:\\w+(\\d+(\\w)*)*)*.+>");
         Matcher m = p.matcher(content);
         LinkedList<Tag> ll = new LinkedList<>();
         while (m.find()) {
-            String s = m.group(1);
-            Tag t = new Tag(s, m.start(1));
+            String s = m.group(0);
+            Tag t = new Tag(s, m.start(0));
             ll.add(t);
         }
         return ll;
@@ -75,25 +76,12 @@ public class BaseDomParser implements DomParser {
 
     private int getCloseTagIndex(List<Tag> tags, Tag openTag) throws Exception{
         for (Tag tag: tags) {
-            if (tag.getFullName() == openTag.getFullName()){
+            if (openTag.getFullName().equals(tag.getFullName()) &&
+                    openTag.getPosition() < tag.getPosition()){
                 return tags.indexOf(tag);
             }
         }
         throw new Exception("No close tag.");
-    }
-
-    private void setChildElements(Element parent, List<Tag> tags, String fileContent, int borderIndex)
-            throws Exception {
-        for (Tag tag: tags) {
-            if(tags.indexOf(tag) < borderIndex){
-                int closeTagIndex = getCloseTagIndex(tags, tag);
-                Element child = createElement(tag, tags.get(closeTagIndex), fileContent);
-                if (!child.hasValue()){
-                    setChildElements(child, tags, fileContent, closeTagIndex);
-                }
-                parent.addChildNode(child);
-            }
-        }
     }
 
     private Element createElementHierarchy(List<Tag> tags, String fileContent) throws Exception{
@@ -103,24 +91,25 @@ public class BaseDomParser implements DomParser {
         Tag closeTag = tags.get(closeTagIndex);
         tags.remove(closeTagIndex);
         Element mainElement = createElement(openTag, closeTag, fileContent);
-
-        for (Tag tag: tags){
-            openTag = tag;
-            tags.remove(tag);
+        parentEl.push(mainElement);
+        while (!tags.isEmpty()){
+            openTag = tags.get(0);
+            tags.remove(0);
             closeTagIndex = getCloseTagIndex(tags, openTag);
             Element childElement = createElement(openTag, tags.get(closeTagIndex), fileContent);
+            parentEl.peek().addChildNode(childElement);
             if (!childElement.hasValue()){
-                setChildElements(childElement, tags, fileContent, closeTagIndex);
+                parentEl.push(childElement);
             }
-            tags.remove(closeTagIndex);
-            mainElement.addChildNode(childElement);
+            if (parentEl.peek().getCloseTag() == openTag)
+                parentEl.pop();
         }
 
         return mainElement;
     }
 
     private Document readXml(String fileContent) throws Exception{
-        if (validateHeader(fileContent)){
+        if (!validateHeader(fileContent)){
            throw new Exception();
         }
 

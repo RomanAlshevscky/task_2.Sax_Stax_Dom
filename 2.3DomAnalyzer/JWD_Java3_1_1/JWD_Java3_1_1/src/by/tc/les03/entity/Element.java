@@ -14,6 +14,10 @@ public class Element implements Node {
     private LinkedList<Node> childNodes;
     private String value;
 
+    public Tag getCloseTag(){
+        return closeTag;
+    };
+
     public Element(Tag openTag, Tag closeTag, String value){
         this.openTag = openTag;
         this.closeTag = closeTag;

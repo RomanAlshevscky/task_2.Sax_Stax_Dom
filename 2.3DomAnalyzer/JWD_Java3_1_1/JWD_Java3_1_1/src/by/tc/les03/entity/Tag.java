@@ -25,7 +25,10 @@ public class Tag {
     }
 
     public String getFullName(){
-        return this.nameSpace + ":" + this.name;
+        if (this.nameSpace != "")
+            return this.nameSpace + ":" + this.name;
+        else
+            return this.name;
     }
 
     public String getName(){
@@ -46,36 +49,39 @@ public class Tag {
     private void parse(String tag) throws Exception{
         parseFullName(tag);
         parseAttributes(tag);
-        isClosed(tag);
     }
 
     private void parseAttributes(String tag) throws Exception{
         this.attributes = new HashMap<String, String>();
 
-        Pattern attrNamePattern = Pattern.compile(" [^=]+");
+        Pattern attrNamePattern = Pattern.compile("[^ =]+ *=");
         Matcher attrNameMatcher =  attrNamePattern.matcher(tag);
 
-        Pattern attrValuePattern = Pattern.compile("\".+\"");
+        Pattern attrValuePattern = Pattern.compile("\"[^\"]*\"");
         Matcher attrValueMatcher = attrValuePattern.matcher(tag);
-
-        if (attrNameMatcher.groupCount() != attrValueMatcher.groupCount())
+        boolean hasName = attrNameMatcher.find();
+        boolean hasValue = attrValueMatcher.find();
+        while(hasName && hasValue){
+            String name = attrNameMatcher.group(0);
+            this.attributes.put(name.substring(0, name.length()-1),attrValueMatcher.group(0));
+            hasName = attrNameMatcher.find();
+            hasValue = attrValueMatcher.find();
+        }
+        if (hasName != hasValue)
             throw new Exception("Doesn't match the number of attributes and it's values");
 
-        while(attrNameMatcher.find() && attrValueMatcher.find()){
-            this.attributes.put(attrNameMatcher.group(1),attrValueMatcher.group(1));
-        }
     }
 
-    private void isClosed(String tag){
-            Pattern p = Pattern.compile("(^<\\/)|(\\/>$)");
-            Matcher m = p.matcher(tag);
-            this.closed = m.find();
-    }
-
-    private void parseFullName(String tag){
-        Pattern p = Pattern.compile("^<\\w+[^ >]*");
+    private void parseFullName(String tag) throws Exception{
+        Pattern p = Pattern.compile("^<\\/*\\w+[^ >]*");
         Matcher m = p.matcher(tag);
-        StringBuilder sb = new StringBuilder(m.group(1));
+        m.find();
+        String name = m.group(0);
+        if (name.charAt(1) == '/'){
+            name = name.substring(1,name.length());
+            closed = true;
+        }
+        StringBuilder sb = new StringBuilder(name);
         sb.delete(0,1);
         int separatorIndex = sb.indexOf(":");
         if(separatorIndex != -1){
