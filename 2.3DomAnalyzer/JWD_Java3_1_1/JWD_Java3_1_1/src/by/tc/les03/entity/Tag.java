@@ -9,6 +9,8 @@ import java.util.regex.Pattern;
  * Created by User on 30.09.2016.
  */
 public class Tag {
+
+    private String tag;
     private String nameSpace;
     private String name;
     private int position;
@@ -17,6 +19,7 @@ public class Tag {
 
     public Tag(String tag, int pos) throws Exception{
         this.position = pos;
+        this.tag = tag;
         parse(tag);
     }
 
@@ -46,6 +49,10 @@ public class Tag {
             return attributes.get(name);
     }
 
+    public String getFullTag(){
+        return tag;
+    }
+
     private void parse(String tag) throws Exception{
         parseFullName(tag);
         parseAttributes(tag);
@@ -72,17 +79,23 @@ public class Tag {
 
     }
 
+    private boolean isClosed(String tag){
+        return tag.charAt(1) == '/' || tag.charAt(tag.length()-2) == '/';
+    }
+
     private void parseFullName(String tag) throws Exception{
         Pattern p = Pattern.compile("^<\\/*\\w+[^ >]*");
         Matcher m = p.matcher(tag);
         m.find();
         String name = m.group(0);
-        if (name.charAt(1) == '/'){
-            name = name.substring(1,name.length());
+        Pattern namePattern = Pattern.compile("\\w+(:\\w+){0,1}");
+        Matcher nameMatcher = namePattern.matcher(name);
+        nameMatcher.find();
+        name = nameMatcher.group(0);
+        if (isClosed(tag)){
             closed = true;
         }
         StringBuilder sb = new StringBuilder(name);
-        sb.delete(0,1);
         int separatorIndex = sb.indexOf(":");
         if(separatorIndex != -1){
             this.nameSpace = sb.substring(0, separatorIndex);

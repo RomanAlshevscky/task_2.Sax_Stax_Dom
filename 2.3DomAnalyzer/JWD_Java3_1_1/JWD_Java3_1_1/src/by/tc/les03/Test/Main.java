@@ -1,5 +1,6 @@
 package by.tc.les03.Test;
 
+import by.tc.les03.entity.Document;
 import by.tc.les03.service.impl.BaseDomParser;
 
 /**
@@ -9,7 +10,7 @@ import by.tc.les03.service.impl.BaseDomParser;
 
     public static void main(String[] args) throws Exception {
         BaseDomParser d = new BaseDomParser();
-        d.parse("menu.xml");
+        Document dt = d.parse("menu.xml");
 
     }
 }
