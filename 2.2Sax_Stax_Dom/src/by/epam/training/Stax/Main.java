@@ -23,6 +23,12 @@ public class Main {
         System.out.println(menu);
     }
 
+    /**
+     *
+     * @param reader
+     * @return
+     * @throws XMLStreamException
+     */
     private static MenuModel getMenuModel(XMLStreamReader reader) throws XMLStreamException{
         MenuModel menu = new MenuModel();
         TagsName currentElementName = TagsName.MENU;

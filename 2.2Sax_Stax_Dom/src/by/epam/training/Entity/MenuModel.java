@@ -7,23 +7,45 @@ import java.util.LinkedList;
  * Created by User on 30.09.2016.
  */
 public class MenuModel {
+
     private HashMap<String, LinkedList<Dish>> menu = new HashMap<>();
 
+    /**
+     *
+     * @param sectionsMap
+     */
     public void addSections(HashMap<String, LinkedList<Dish>> sectionsMap){
         menu.putAll(sectionsMap);
     }
 
-
+    /**
+     *
+     * @param name
+     * @param dishes
+     */
     public void addSection(String name, LinkedList<Dish> dishes){
         this.menu.put(name, dishes);
     }
 
+    /**
+     *
+     * @param sectionName
+     * @return
+     * @throws Exception
+     */
     public LinkedList<Dish> getDishes(String sectionName) throws Exception{
         if(!menu.containsKey(sectionName))
             throw new Exception("No such section");
         return menu.get(sectionName);
     }
 
+    /**
+     *
+     * @param sectionName
+     * @param dishName
+     * @return
+     * @throws Exception
+     */
     public Dish getDish(String sectionName, String dishName) throws Exception{
         LinkedList<Dish> ll = getDishes(sectionName);
         for (Dish dish: ll) {
@@ -33,6 +55,10 @@ public class MenuModel {
         throw new Exception("No such dish.");
     }
 
+    /**
+     *
+     * @return
+     */
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();

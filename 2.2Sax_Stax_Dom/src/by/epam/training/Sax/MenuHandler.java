@@ -24,6 +24,14 @@ public class MenuHandler extends DefaultHandler {
         return this.menu;
     }
 
+    /**
+     *
+     * @param uri
+     * @param localName
+     * @param qName
+     * @param attributes
+     * @throws SAXException
+     */
     public void startElement(String uri, String localName, String qName, Attributes attributes) throws SAXException {
         elementValue = new StringBuilder();
         if (qName.equals("section")){
@@ -37,6 +45,13 @@ public class MenuHandler extends DefaultHandler {
         }
     }
 
+    /**
+     *
+     * @param namespaceURI
+     * @param localName
+     * @param qName
+     * @throws SAXException
+     */
     public void endElement(String namespaceURI, String localName, String qName) throws SAXException {
         TagsName tagName = TagsName.valueOf(qName.toUpperCase());
         switch (tagName){
@@ -67,6 +82,13 @@ public class MenuHandler extends DefaultHandler {
         }
     }
 
+    /**
+     *
+     * @param ch
+     * @param start
+     * @param length
+     * @throws SAXException
+     */
     public void characters(char[] ch, int start, int length) throws SAXException{
         elementValue.append(ch, start, length);
     }

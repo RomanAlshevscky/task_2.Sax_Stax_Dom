@@ -10,23 +10,37 @@ import java.util.regex.Pattern;
  */
 public class Tag {
 
-    private String tag;
+    private String tag; //source string to parse
     private String nameSpace;
     private String name;
-    private int position;
-    private HashMap<String, String> attributes;
+    private int position;//position in xml doc
+    private HashMap<String, String> attributes;//name, value
     public boolean closed;
 
+    /**
+     *
+     * @param tag
+     * @param pos
+     * @throws Exception
+     */
     public Tag(String tag, int pos) throws Exception{
         this.position = pos;
         this.tag = tag;
         parse(tag);
     }
 
+    /**
+     * Get posinion in xml doc
+     * @return
+     */
     public int getPosition(){
         return this.position;
     }
 
+    /**
+     * Get namespace:name
+     * @return
+     */
     public String getFullName(){
         if (this.nameSpace != "")
             return this.nameSpace + ":" + this.name;
@@ -34,14 +48,28 @@ public class Tag {
             return this.name;
     }
 
+    /**
+     * Get name without namespace
+     * @return
+     */
     public String getName(){
         return this.name;
     }
 
+    /**
+     *
+     * @return
+     */
     public Map getAttributes(){
         return attributes;
     }
 
+    /**
+     *
+     * @param name
+     * @return
+     * @throws Exception
+     */
     public String getAttributeValue(String name) throws Exception{
         if(attributes.isEmpty() || !attributes.containsKey(name))
             throw new Exception("No such attribute.");
@@ -49,15 +77,29 @@ public class Tag {
             return attributes.get(name);
     }
 
+    /**
+     * get source string with tag
+     * @return
+     */
     public String getFullTag(){
         return tag;
     }
 
+    /**
+     *
+     * @param tag
+     * @throws Exception
+     */
     private void parse(String tag) throws Exception{
         parseFullName(tag);
         parseAttributes(tag);
     }
 
+    /**
+     *
+     * @param tag
+     * @throws Exception
+     */
     private void parseAttributes(String tag) throws Exception{
         this.attributes = new HashMap<String, String>();
 
@@ -79,22 +121,35 @@ public class Tag {
 
     }
 
+    /**
+     *
+     * @param tag
+     * @return
+     */
     private boolean isClosed(String tag){
         return tag.charAt(1) == '/' || tag.charAt(tag.length()-2) == '/';
     }
 
+    /**
+     *
+     * @param tag
+     * @throws Exception
+     */
     private void parseFullName(String tag) throws Exception{
         Pattern p = Pattern.compile("^<\\/*\\w+[^ >]*");
         Matcher m = p.matcher(tag);
         m.find();
         String name = m.group(0);
+        // Find tag name in two steps, using two reg's
         Pattern namePattern = Pattern.compile("\\w+(:\\w+){0,1}");
         Matcher nameMatcher = namePattern.matcher(name);
         nameMatcher.find();
         name = nameMatcher.group(0);
+
         if (isClosed(tag)){
             closed = true;
         }
+        //Check for namespace
         StringBuilder sb = new StringBuilder(name);
         int separatorIndex = sb.indexOf(":");
         if(separatorIndex != -1){

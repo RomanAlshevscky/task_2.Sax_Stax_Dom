@@ -12,7 +12,6 @@ public interface Node {
     List<Node> getChildNodes();
     String getNodeName();
     String getNodeValue();
-    //Node getParentNode();
     boolean hasAttributes();
     boolean hasChildNodes();
 
